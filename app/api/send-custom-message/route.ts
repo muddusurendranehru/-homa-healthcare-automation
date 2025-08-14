@@ -6,7 +6,6 @@ export async function POST(request: Request) {
     const botToken = '8214864800:AAEtYsHUOv07OkQcP-szHCN-gY8yeVkTPGQ';
     const chatId = '5892544777';
     
-    // Generate custom message based on type
     let message = '';
     
     if (data.messageType === 'appointment') {
@@ -19,70 +18,40 @@ export async function POST(request: Request) {
 🕐 ${data.appointmentDate} at ${data.appointmentTime}
 👨‍⚕️ Doctor: ${data.doctorName}
 📍 Please arrive 15 minutes early
-💳 Bring ID and insurance cards
 
-📞 Contact: +91 99637 21999
-
-Your healthcare team`;
+📞 Contact: +91 99637 21999`;
     } else if (data.messageType === 'prescription') {
       message = `💊 MEDICATION REMINDER
 
 👤 Dear ${data.patientName},
 
-⏰ Time to take your medication:
-💊 ${data.medicationName}
-
+⏰ Time to take: ${data.medicationName}
 📋 Take as prescribed
-📞 Call if side effects: +91 99637 21999
-
-🏥 ${data.clinicName || 'Healthcare Team'}`;
-    } else if (data.messageType === 'emergency') {
-      message = `🚨 URGENT MEDICAL ALERT
-
-👤 Dear ${data.patientName},
-
-⚡ ${data.emergencyDetails}
-
-📞 CALL NOW: +91 99637 21999
-🏥 Visit clinic immediately
-
-Emergency Team`;
+📞 Call: +91 99637 21999`;
     } else {
-      message = `🏥 ${data.clinicName || 'Healthcare Clinic'}
+      message = `🏥 Healthcare Notification
 
 👤 Dear ${data.patientName},
-
-${data.customMessage || 'Healthcare notification'}
-
-📞 Contact: +91 99637 21999`;
+${data.customMessage || 'Healthcare update'}
+📞 +91 99637 21999`;
     }
 
-    // Send to Telegram
     const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
-        text: message,
-        parse_mode: 'HTML'
+        text: message
       })
     });
 
     const result = await response.json();
     
-    if (result.ok) {
-      return Response.json({
-        success: true,
-        message: `✅ ${data.messageType} sent to ${data.patientName}!`,
-        messageType: data.messageType,
-        patient: data.patientName
-      });
-    } else {
-      return Response.json({
-        success: false,
-        error: result.description
-      }, { status: 400 });
-    }
+    return Response.json({
+      success: result.ok,
+      message: result.ok ? `✅ ${data.messageType} sent to ${data.patientName}` : result.description,
+      patient: data.patientName
+    });
 
   } catch (error: any) {
     return Response.json({
@@ -94,17 +63,8 @@ ${data.customMessage || 'Healthcare notification'}
 
 export async function GET() {
   return Response.json({
-    message: '🏥 Custom Healthcare Messaging API',
-    status: 'Working',
-    examples: {
-      appointment: {
-        messageType: 'appointment',
-        patientName: 'Rajesh Kumar',
-        clinicName: 'Dr. Sharma Clinic',
-        appointmentDate: 'Tomorrow',
-        appointmentTime: '10:00 AM',
-        doctorName: 'Dr. Rakesh Sharma'
-      }
-    }
+    message: '🏥 Custom Healthcare Messaging API - WORKING!',
+    status: 'Active',
+    owner: 'Dr. Muddu Surendra Nehru'
   });
 }
