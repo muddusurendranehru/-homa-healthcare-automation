@@ -1,0 +1,163 @@
+// src/app/page.tsx - Healthcare Dashboard Homepage
+import { Heart, Users, Calendar, Activity, TrendingUp, Bell, Settings, MessageSquare } from 'lucide-react';
+
+export default function Dashboard() {
+  const stats = [
+    {
+      title: "Total Patients",
+      value: "2,847",
+      change: "+12%",
+      icon: Users,
+      color: "bg-blue-500"
+    },
+    {
+      title: "Today's Appointments",
+      value: "47",
+      change: "+3",
+      icon: Calendar,
+      color: "bg-green-500"
+    },
+    {
+      title: "Active Automations",
+      value: "12",
+      change: "100%",
+      icon: Activity,
+      color: "bg-purple-500"
+    },
+    {
+      title: "Patient Satisfaction",
+      value: "94.8%",
+      change: "+2.1%",
+      icon: Heart,
+      color: "bg-red-500"
+    }
+  ];
+
+  const recentActivities = [
+    { time: "10:30 AM", action: "New patient registration", patient: "Sarah Johnson" },
+    { time: "10:15 AM", action: "Appointment confirmed", patient: "Dr. Smith" },
+    { time: "09:45 AM", action: "Instagram post automated", patient: "Health Tips" },
+    { time: "09:30 AM", action: "WhatsApp reminder sent", patient: "5 patients" },
+  ];
+
+  const automationStatus = [
+    { name: "Instagram Posts", status: "Active", next: "2:00 PM", color: "bg-green-100 text-green-800" },
+    { name: "WhatsApp Reminders", status: "Active", next: "Every hour", color: "bg-green-100 text-green-800" },
+    { name: "Facebook Updates", status: "Paused", next: "Manual", color: "bg-yellow-100 text-yellow-800" },
+    { name: "Patient Follow-ups", status: "Active", next: "6:00 PM", color: "bg-green-100 text-green-800" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+      {/* Header */}
+      <div className="mb-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              🏥 Homa Health Care
+            </h1>
+            <p className="text-gray-600">Healthcare Automation Dashboard</p>
+          </div>
+          <div className="flex items-center space-x-4 mt-4 md:mt-0">
+            <button className="p-2 rounded-lg bg-white shadow-sm border hover:bg-gray-50">
+              <Bell className="h-5 w-5 text-gray-600" />
+            </button>
+            <button className="p-2 rounded-lg bg-white shadow-sm border hover:bg-gray-50">
+              <Settings className="h-5 w-5 text-gray-600" />
+            </button>
+            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-sm font-medium">H</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {stats.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <div key={index} className="bg-white rounded-xl shadow-sm border p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className={`p-3 rounded-lg ${stat.color}`}>
+                  <Icon className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-sm font-medium text-green-600">{stat.change}</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
+              <p className="text-gray-600 text-sm">{stat.title}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Activities */}
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-900">Recent Activities</h2>
+          </div>
+          <div className="p-6">
+            <div className="space-y-4">
+              {recentActivities.map((activity, index) => (
+                <div key={index} className="flex items-center space-x-4">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-gray-900">{activity.action}</p>
+                    <p className="text-sm text-gray-600">{activity.patient}</p>
+                  </div>
+                  <span className="text-sm text-gray-500">{activity.time}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Automation Status */}
+        <div className="bg-white rounded-xl shadow-sm border">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-900">Automation Status</h2>
+          </div>
+          <div className="p-6">
+            <div className="space-y-4">
+              {automationStatus.map((item, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{item.name}</p>
+                    <p className="text-xs text-gray-500">Next: {item.next}</p>
+                  </div>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${item.color}`}>
+                    {item.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="mt-8 bg-white rounded-xl shadow-sm border p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <button className="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+            <Users className="h-8 w-8 text-blue-500 mb-2" />
+            <span className="text-sm font-medium text-gray-700">Add Patient</span>
+          </button>
+          <button className="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-gray-200 hover:border-green-300 hover:bg-green-50 transition-colors">
+            <Calendar className="h-8 w-8 text-green-500 mb-2" />
+            <span className="text-sm font-medium text-gray-700">Schedule</span>
+          </button>
+          <button className="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition-colors">
+            <MessageSquare className="h-8 w-8 text-purple-500 mb-2" />
+            <span className="text-sm font-medium text-gray-700">Send Message</span>
+          </button>
+          <button className="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors">
+            <TrendingUp className="h-8 w-8 text-orange-500 mb-2" />
+            <span className="text-sm font-medium text-gray-700">Analytics</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
